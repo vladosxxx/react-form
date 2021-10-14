@@ -8,12 +8,16 @@ class About extends React.Component {
 
   render() {
     return (
-      <input
-        type="textarea"
-        name="about"
-        value={this.props.site}
-        onChange={this.props.handler}
-      />
+      <div>
+        <label htmlFor="about"></label>
+        <input
+          type="textarea"
+          id="about"
+          name="about"
+          value={this.props.site.text}
+          onChange={this.props.handler}
+        />
+      </div>
     )
   }
 }

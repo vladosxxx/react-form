@@ -8,13 +8,16 @@ class Site extends React.Component {
 
   render() {
     return (
-      <input
-        type="text"
-        label="site"
-        name="webSite"
-        value={this.props.site}
-        onChange={this.props.handler}
-      />
+      <div>
+        <label htmlFor="site"></label>
+        <input
+          type="text"
+          id="site"
+          name="webSite"
+          value={this.props.site.text}
+          onChange={this.props.handler}
+        />
+      </div>
     )
   }
 }

@@ -8,13 +8,16 @@ class Date extends React.Component {
 
   render() {
     return (
-      <input
-        type="date"
-        label="date"
-        name="birthDay"
-        value={this.props.date}
-        onChange={this.props.handler}
-      />
+      <div>
+        <label htmlFor="date"></label>
+        <input
+          type="date"
+          id="date"
+          name="birthDay"
+          value={this.props.date.text}
+          onChange={this.props.handler}
+        />
+      </div>
     )
   }
 }

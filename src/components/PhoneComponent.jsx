@@ -8,14 +8,17 @@ class Phone extends React.Component {
 
   render() {
     return (
-      <input
-        type="text"
-        label="phone"
-        name="phone"
-        maxLength="12"
-        value={this.props.phone}
-        onChange={this.props.handler}
-      />
+      <div>
+        <label htmlFor="phone"></label>
+        <input
+          type="text"
+          id="phone"
+          name="phone"
+          maxLength="12"
+          value={this.props.phone.text}
+          onChange={this.props.handler}
+        />
+      </div>
     )
   }
 }

@@ -8,13 +8,16 @@ class LastName extends React.Component {
 
   render() {
     return (
-      <input
-        type="text"
-        label="lastName"
-        name="lastName"
-        value={this.props.name}
-        onChange={this.props.handler}
-      />
+      <div>
+        <label htmlFor="lastName">Name</label>
+        <input
+          type="text"
+          id="lastName"
+          name="lastName"
+          value={this.props.name.text}
+          onChange={this.props.handler}
+        />
+      </div>
     )
   }
 }

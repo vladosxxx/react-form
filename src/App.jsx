@@ -11,14 +11,46 @@ class App extends React.Component {
   constructor(props) {
     super(props)
     this.state = {
-      firstName: '',
-      lastName: '',
-      birthDay: '',
-      phone: '',
-      webSite: '',
-      about: '',
-      stack: '',
-      lastProject: '',
+      firstName: {
+        text: '',
+        styleInput: 'black',
+        errorMessage: 'Введите имя с заглавной буквы',
+      },
+      lastName: {
+        text: '',
+        styleInput: 'black',
+        errorMessage: 'Введите имя с заглавной буквы',
+      },
+      birthDay: {
+        text: '',
+        styleInput: 'black',
+        errorMessage: 'Введите имя с заглавной буквы',
+      },
+      phone: {
+        text: '',
+        styleInput: 'black',
+        errorMessage: 'Введите имя с заглавной буквы',
+      },
+      webSite: {
+        text: '',
+        styleInput: 'black',
+        errorMessage: 'Введите имя с заглавной буквы',
+      },
+      about: {
+        text: '',
+        styleInput: 'black',
+        errorMessage: 'Введите имя с заглавной буквы',
+      },
+      stack: {
+        text: '',
+        styleInput: 'black',
+        errorMessage: 'Введите имя с заглавной буквы',
+      },
+      lastProject: {
+        text: '',
+        styleInput: 'black',
+        errorMessage: 'Введите имя с заглавной буквы',
+      },
       hasError: false,
     }
   }
@@ -27,8 +59,10 @@ class App extends React.Component {
       hasError: error,
     }))
   }
-  validNames = (value) => {
-    if (value[0]) value = value[0].toUpperCase() + value.slice(1)
+  validNames = (name, value) => {
+    if (value[0] !== value[0].toUpperCase()) {
+      this.setState(() => {})
+    }
     return value
   }
   validPhone = (value) => {
@@ -52,10 +86,8 @@ class App extends React.Component {
   validTextArea = (value) => {}
   handlerOnChange = ({ target: { name, value } }) => {
     value = value.trim()
-    console.log('name:', name)
-    console.log('value:', value)
     if (name === 'firstName' || name === 'lastName') {
-      value = this.validNames(value)
+      value = this.validNames(name, value)
     }
     if (name === 'phone') {
       value = this.validPhone(value)
@@ -67,7 +99,7 @@ class App extends React.Component {
       value = this.validTextArea(value)
     }
     this.setState(() => ({
-      [name]: value,
+      [name]: { text: value },
     }))
   }
   handlerDate = () => {}
