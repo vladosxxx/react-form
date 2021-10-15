@@ -9,7 +9,7 @@ class Date extends React.Component {
   render() {
     return (
       <div>
-        <label htmlFor="date"></label>
+        <label htmlFor="date">Дата рождения</label>
         <input
           type="date"
           id="date"

@@ -10,16 +10,26 @@ class FirstName extends React.Component {
   render() {
     return (
       <div>
-        <label htmlFor="firstName">Name</label>
+        <label htmlFor="firstName">Имя</label>
         <input
           type="text"
           id="firstName"
           name="firstName"
+          style={{
+            border: `1px solid ${
+              this.props.name.errorMessage ? 'red' : 'black'
+            }`,
+          }}
           value={this.props.name.text}
           onChange={this.props.handler}
         />
-        <span class="error" aria-live="polite">
-          {this.props.err}
+        <span
+          class="error"
+          style={{
+            visibility: this.props.name.errorMessage ? 'visible' : 'hidden',
+          }}
+        >
+          Имя должно начинаться с заглавной буквы
         </span>
       </div>
     )

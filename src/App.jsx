@@ -4,6 +4,8 @@ import Date from './components/DateComponent'
 import Phone from './components/PhoneComponent'
 import Site from './components/SiteComponent'
 import About from './components/AboutComponent'
+import Stack from './components/StackComponent'
+import Project from './components/ProjectComponent'
 import './App.css'
 import React from 'react'
 
@@ -13,56 +15,51 @@ class App extends React.Component {
     this.state = {
       firstName: {
         text: '',
-        styleInput: 'black',
-        errorMessage: 'Введите имя с заглавной буквы',
+        errorMessage: false,
       },
       lastName: {
         text: '',
-        styleInput: 'black',
-        errorMessage: 'Введите имя с заглавной буквы',
+        errorMessage: false,
       },
       birthDay: {
         text: '',
-        styleInput: 'black',
-        errorMessage: 'Введите имя с заглавной буквы',
+        errorMessage: false,
       },
       phone: {
         text: '',
-        styleInput: 'black',
-        errorMessage: 'Введите имя с заглавной буквы',
+        errorMessage: false,
       },
       webSite: {
         text: '',
-        styleInput: 'black',
-        errorMessage: 'Введите имя с заглавной буквы',
+        errorMessage: false,
       },
       about: {
         text: '',
-        styleInput: 'black',
-        errorMessage: 'Введите имя с заглавной буквы',
+        symbols: 0,
+        errorMessage: false,
       },
       stack: {
         text: '',
-        styleInput: 'black',
-        errorMessage: 'Введите имя с заглавной буквы',
+        symbols: 0,
+        errorMessage: false,
       },
       lastProject: {
         text: '',
-        styleInput: 'black',
-        errorMessage: 'Введите имя с заглавной буквы',
+        symbols: 0,
+        errorMessage: false,
       },
       hasError: false,
     }
   }
-  isError = (error) => {
-    this.setState(() => ({
-      hasError: error,
-    }))
-  }
   validNames = (name, value) => {
-    if (value[0] !== value[0].toUpperCase()) {
-      this.setState(() => {})
-    }
+    value = value.replace(/[^a-zA-ZА-Яа-яЁё]/gi, '')
+    this.setState((prevState) => ({
+      [name]: {
+        ...prevState[name],
+        errorMessage:
+          value === '' || value[0] === value[0].toUpperCase() ? false : true,
+      },
+    }))
     return value
   }
   validPhone = (value) => {
@@ -73,17 +70,33 @@ class App extends React.Component {
         (m, $1, $2, $3, $4, $5, $6, $7) =>
           ($1 ? $1 + '-' : m) + ($3 ? $3 + '-' : $4) + ($6 ? $6 + '-' : $7)
       )
+    this.setState((prevState) => ({
+      phone: {
+        ...prevState.phone,
+        errorMessage: value.length > 12 ? true : false,
+      },
+    }))
+    console.log(this.state.phone)
     return value
   }
   validSite = (value) => {
-    if (value.substr(0, 8) !== 'https://') {
-      this.isError(true)
-    } else {
-      this.isError(false)
-    }
+    this.setState((prevState) => ({
+      webSite: {
+        ...prevState.webSite,
+        errorMessage: value.substr(0, 8) !== 'https://' ? true : false,
+      },
+    }))
     return value
   }
-  validTextArea = (value) => {}
+  validTextArea = (name, value) => {
+    this.setState((prevState) => ({
+      [name]: {
+        ...prevState[name],
+        symbols: value.length,
+        errorMessage: value.length > 600 ? true : false,
+      },
+    }))
+  }
   handlerOnChange = ({ target: { name, value } }) => {
     value = value.trim()
     if (name === 'firstName' || name === 'lastName') {
@@ -96,10 +109,11 @@ class App extends React.Component {
       value = this.validSite(value)
     }
     if (name === 'about' || name === 'stack' || name === 'lastProject') {
-      value = this.validTextArea(value)
+      value = this.validTextArea(name, value)
     }
-    this.setState(() => ({
-      [name]: { text: value },
+    console.log(typeof name)
+    this.setState((prevState) => ({
+      [name]: { ...prevState[name], text: value },
     }))
   }
   handlerDate = () => {}
@@ -116,6 +130,11 @@ class App extends React.Component {
           <Phone phone={this.state.phone} handler={this.handlerOnChange} />
           <Site site={this.state.webSite} handler={this.handlerOnChange} />
           <About about={this.state.about} handler={this.handlerOnChange} />
+          <Stack stack={this.state.stack} handler={this.handlerOnChange} />
+          <Project
+            project={this.state.lastProject}
+            handler={this.handlerOnChange}
+          />
           <button type="submit">Сохранить</button>
         </form>
       </div>

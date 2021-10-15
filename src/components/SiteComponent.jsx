@@ -9,14 +9,27 @@ class Site extends React.Component {
   render() {
     return (
       <div>
-        <label htmlFor="site"></label>
+        <label htmlFor="site">Сайт</label>
         <input
           type="text"
           id="site"
           name="webSite"
+          style={{
+            border: `1px solid ${
+              this.props.site.errorMessage ? 'red' : 'black'
+            }`,
+          }}
           value={this.props.site.text}
           onChange={this.props.handler}
         />
+        <span
+          class="error"
+          style={{
+            visibility: this.props.site.errorMessage ? 'visible' : 'hidden',
+          }}
+        >
+          Название сайта должно начинаться с https://
+        </span>
       </div>
     )
   }

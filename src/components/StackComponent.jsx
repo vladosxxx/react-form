@@ -1,6 +1,6 @@
 import React from 'react'
 
-class About extends React.Component {
+class Stack extends React.Component {
   constructor(props) {
     super(props)
     this.props = props
@@ -9,29 +9,29 @@ class About extends React.Component {
   render() {
     return (
       <div>
-        <label htmlFor="about">О себе</label>
+        <label htmlFor="stack">Стек технологий</label>
         <textarea
-          id="about"
-          name="about"
+          id="stack"
+          name="stack"
           style={{
             border: `1px solid ${
-              this.props.about.errorMessage ? 'red' : 'black'
+              this.props.stack.errorMessage ? 'red' : 'black'
             }`,
           }}
-          value={this.props.about.text}
+          value={this.props.stack.text}
           onChange={this.props.handler}
         />
         <span
           style={{
-            color: this.props.about.errorMessage ? 'red' : 'black',
+            color: this.props.stack.errorMessage ? 'red' : 'black',
           }}
         >
-          600/{this.props.about.symbols}
+          600/{this.props.stack.symbols}
         </span>
         <span
           class="error"
           style={{
-            visibility: this.props.about.errorMessage ? 'visible' : 'hidden',
+            visibility: this.props.stack.errorMessage ? 'visible' : 'hidden',
           }}
         >
           Вы превысили число символов!
@@ -41,4 +41,4 @@ class About extends React.Component {
   }
 }
 
-export default About
+export default Stack
