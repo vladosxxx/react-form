@@ -4,24 +4,29 @@ class Project extends React.Component {
   constructor(props) {
     super(props)
     this.props = props
+    console.log(this.props.project.symbols)
   }
 
   render() {
     return (
-      <div>
+      <div className="input-block">
         <label htmlFor="lastProject">Описание последнего проекта</label>
         <textarea
           id="lastProject"
           name="lastProject"
+          className="form-control"
           style={{
-            border: `1px solid ${
-              this.props.project.errorMessage ? 'red' : 'black'
+            border: `${
+              this.props.project.errorMessage || this.props.project.errorEmpty
+                ? '1px solid red'
+                : 'none'
             }`,
           }}
           value={this.props.project.text}
           onChange={this.props.handler}
         />
         <span
+          className="counter"
           style={{
             color: this.props.project.errorMessage ? 'red' : 'black',
           }}
@@ -29,12 +34,17 @@ class Project extends React.Component {
           600/{this.props.project.symbols}
         </span>
         <span
-          class="error"
+          className="error"
           style={{
-            visibility: this.props.project.errorMessage ? 'visible' : 'hidden',
+            visibility:
+              this.props.project.errorMessage || this.props.project.errorEmpty
+                ? 'visible'
+                : 'hidden',
           }}
         >
-          Вы превысили число символов!
+          {this.props.project.errorMessage
+            ? 'Вы превысили число символов!'
+            : 'Поле пустое. Заполните пожалуйста'}
         </span>
       </div>
     )

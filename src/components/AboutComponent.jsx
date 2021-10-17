@@ -8,20 +8,24 @@ class About extends React.Component {
 
   render() {
     return (
-      <div>
+      <div className="input-block">
         <label htmlFor="about">О себе</label>
         <textarea
           id="about"
           name="about"
+          className="form-control"
           style={{
-            border: `1px solid ${
-              this.props.about.errorMessage ? 'red' : 'black'
+            border: `${
+              this.props.about.errorMessage || this.props.about.errorEmpty
+                ? '1px solid red'
+                : 'none'
             }`,
           }}
           value={this.props.about.text}
           onChange={this.props.handler}
         />
         <span
+          className="counter"
           style={{
             color: this.props.about.errorMessage ? 'red' : 'black',
           }}
@@ -29,12 +33,17 @@ class About extends React.Component {
           600/{this.props.about.symbols}
         </span>
         <span
-          class="error"
+          className="error"
           style={{
-            visibility: this.props.about.errorMessage ? 'visible' : 'hidden',
+            visibility:
+              this.props.about.errorMessage || this.props.about.errorEmpty
+                ? 'visible'
+                : 'hidden',
           }}
         >
-          Вы превысили число символов!
+          {this.props.about.errorMessage
+            ? 'Вы превысили число символов!'
+            : 'Поле пустое. Заполните пожалуйста'}
         </span>
       </div>
     )

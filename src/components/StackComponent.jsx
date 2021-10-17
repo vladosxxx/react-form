@@ -8,20 +8,24 @@ class Stack extends React.Component {
 
   render() {
     return (
-      <div>
+      <div className="input-block">
         <label htmlFor="stack">Стек технологий</label>
         <textarea
           id="stack"
           name="stack"
+          className="form-control"
           style={{
-            border: `1px solid ${
-              this.props.stack.errorMessage ? 'red' : 'black'
+            border: `${
+              this.props.stack.errorMessage || this.props.stack.errorEmpty
+                ? '1px solid red'
+                : 'none'
             }`,
           }}
           value={this.props.stack.text}
           onChange={this.props.handler}
         />
         <span
+          className="counter"
           style={{
             color: this.props.stack.errorMessage ? 'red' : 'black',
           }}
@@ -29,12 +33,17 @@ class Stack extends React.Component {
           600/{this.props.stack.symbols}
         </span>
         <span
-          class="error"
+          className="error"
           style={{
-            visibility: this.props.stack.errorMessage ? 'visible' : 'hidden',
+            visibility:
+              this.props.stack.errorMessage || this.props.stack.errorEmpty
+                ? 'visible'
+                : 'hidden',
           }}
         >
-          Вы превысили число символов!
+          {this.props.stack.errorMessage
+            ? 'Вы превысили число символов!'
+            : 'Поле пустое. Заполните пожалуйста'}
         </span>
       </div>
     )

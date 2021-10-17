@@ -4,32 +4,39 @@ class Phone extends React.Component {
   constructor(props) {
     super(props)
     this.props = props
-    // console.log(this.props.phone)
   }
 
   render() {
     return (
-      <div>
+      <div className="input-block">
         <label htmlFor="phone">Телефон</label>
         <input
           type="text"
           id="phone"
           name="phone"
+          className="form-control"
           style={{
-            border: `1px solid ${
-              this.props.phone.errorMessage ? 'red' : 'black'
+            border: `${
+              this.props.phone.errorMessage || this.props.phone.errorEmpty
+                ? '1px solid red'
+                : 'none'
             }`,
           }}
           value={this.props.phone.text}
           onChange={this.props.handler}
         />
         <span
-          class="error"
+          className="error"
           style={{
-            visibility: this.props.phone.errorMessage ? 'visible' : 'hidden',
+            visibility:
+              this.props.phone.errorMessage || this.props.phone.errorEmpty
+                ? 'visible'
+                : 'hidden',
           }}
         >
-          Телефон должен иметь не более 9 символов
+          {this.props.phone.errorMessage
+            ? 'Телефон должен иметь не более 9 символов'
+            : 'Поле пустое. Заполните пожалуйста'}
         </span>
       </div>
     )

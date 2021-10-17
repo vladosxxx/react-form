@@ -9,27 +9,35 @@ class FirstName extends React.Component {
 
   render() {
     return (
-      <div>
+      <div className="input-block">
         <label htmlFor="firstName">Имя</label>
         <input
           type="text"
           id="firstName"
           name="firstName"
+          className="form-control"
           style={{
-            border: `1px solid ${
-              this.props.name.errorMessage ? 'red' : 'black'
+            border: `${
+              this.props.name.errorMessage || this.props.name.errorEmpty
+                ? '1px solid red'
+                : 'none'
             }`,
           }}
           value={this.props.name.text}
           onChange={this.props.handler}
         />
         <span
-          class="error"
+          className="error"
           style={{
-            visibility: this.props.name.errorMessage ? 'visible' : 'hidden',
+            visibility:
+              this.props.name.errorMessage || this.props.name.errorEmpty
+                ? 'visible'
+                : 'hidden',
           }}
         >
-          Имя должно начинаться с заглавной буквы
+          {this.props.name.errorMessage
+            ? 'Имя должно начинаться с заглавной буквы'
+            : 'Поле пустое. Заполните пожалуйста'}
         </span>
       </div>
     )
