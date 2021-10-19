@@ -8,73 +8,72 @@ import Stack from './components/StackComponent'
 import Project from './components/ProjectComponent'
 import Profile from './components/ProfileComponent'
 import './App.css'
-import React from 'react'
+import React, { useEffect, useState } from 'react'
+function App() {
+  const [state, setState] = useState({
+    firstName: {
+      text: '',
+      errorEmpty: false,
+      errorMessage: false,
+    },
+    lastName: {
+      text: '',
+      errorEmpty: false,
+      errorMessage: false,
+    },
+    birthDay: {
+      text: '',
+      errorMessage: false,
+      errorEmpty: false,
+    },
+    phone: {
+      text: '',
+      errorEmpty: false,
+      errorMessage: false,
+    },
+    webSite: {
+      text: '',
+      errorEmpty: false,
+      errorMessage: false,
+    },
+    about: {
+      text: '',
+      symbols: 0,
+      errorEmpty: false,
+      errorMessage: false,
+    },
+    stack: {
+      text: '',
+      symbols: 0,
+      errorEmpty: false,
+      errorMessage: false,
+    },
+    lastProject: {
+      text: '',
+      symbols: 0,
+      errorEmpty: false,
+      errorMessage: false,
+    },
+    hasError: false,
+    profileDone: false,
+  })
+  const [confirm, setConfirm] = useState(false)
 
-class App extends React.Component {
-  constructor(props) {
-    super(props)
-    this.state = {
-      firstName: {
-        text: '',
-        errorEmpty: false,
-        errorMessage: false,
-      },
-      lastName: {
-        text: '',
-        errorEmpty: false,
-        errorMessage: false,
-      },
-      birthDay: {
-        text: '',
-        errorMessage: false,
-        errorEmpty: false,
-      },
-      phone: {
-        text: '',
-        errorEmpty: false,
-        errorMessage: false,
-      },
-      webSite: {
-        text: '',
-        errorEmpty: false,
-        errorMessage: false,
-      },
-      about: {
-        text: '',
-        symbols: 0,
-        errorEmpty: false,
-        errorMessage: false,
-      },
-      stack: {
-        text: '',
-        symbols: 0,
-        errorEmpty: false,
-        errorMessage: false,
-      },
-      lastProject: {
-        text: '',
-        symbols: 0,
-        errorEmpty: false,
-        errorMessage: false,
-      },
-      hasError: false,
-      profileDone: false,
-    }
-  }
-  validNames = (name, value) => {
+  const validNames = (name, value) => {
     value = value.replace(/[^a-zA-ZА-Яа-яЁё]/gi, '')
-    this.setState((prevState) => ({
+    setState((prevState) => ({
+      ...prevState,
       [name]: {
         ...prevState[name],
         errorMessage:
           value === '' || value[0] === value[0].toUpperCase() ? false : true,
       },
-      hasError: this.state[name].errorMessage ? true : false,
+      hasError: state[name].errorMessage ? true : false,
     }))
-    console.log(this.state)
+
     return value
   }
-  validPhone = (value) => {
+  const validPhone = (value) => {
     value = value
       .replace(/[^\d]/g, '')
       .replace(
@@ -82,87 +81,81 @@ class App extends React.Component {
         (m, $1, $2, $3, $4, $5, $6, $7) =>
           ($1 ? $1 + '-' : m) + ($3 ? $3 + '-' : $4) + ($6 ? $6 + '-' : $7)
       )
-    this.setState((prevState) => ({
+    setState((prevState) => ({
+      ...prevState,
       phone: {
         ...prevState.phone,
         errorMessage: value.length > 12 ? true : false,
       },
-      hasError: this.state.phone.errorMessage ? true : false,
+      hasError: state.phone.errorMessage ? true : false,
     }))
     return value
   }
-  validSite = (value) => {
-    this.setState((prevState) => ({
+  const validSite = (value) => {
+    setState((prevState) => ({
+      ...prevState,
       webSite: {
         ...prevState.webSite,
         errorMessage: value.substr(0, 8) !== 'https://' ? true : false,
       },
-      hasError: this.state.webSite.errorMessage ? true : false,
+      hasError: state.webSite.errorMessage ? true : false,
     }))
     return value
   }
-  validTextArea = (name, value) => {
-    this.setState((prevState) => ({
+  const validTextArea = (name, value) => {
+    setState((prevState) => ({
+      ...prevState,
       [name]: {
         ...prevState[name],
         symbols: value.length,
         errorMessage: value.length > 600 ? true : false,
       },
-      hasError: this.state[name].errorMessage ? true : false,
+      hasError: state[name].errorMessage ? true : false,
     }))
     return value
   }
-  handlerOnChange = ({ target: { name, value } }) => {
-    console.log('haser: ', this.state.hasError)
+  const handlerOnChange = ({ target: { name, value } }) => {
     if (name === 'about' || name === 'stack' || name === 'lastProject') {
-      value = this.validTextArea(name, value)
+      value = validTextArea(name, value)
     } else {
       value = value.trim()
     }
     if (name === 'firstName' || name === 'lastName') {
-      value = this.validNames(name, value)
+      value = validNames(name, value)
     }
     if (name === 'phone') {
-      value = this.validPhone(value)
+      value = validPhone(value)
     }
     if (name === 'webSite') {
-      value = this.validSite(value)
+      value = validSite(value)
     }
-    this.setState((prevState) => ({
+    setState((prevState) => ({
+      ...prevState,
       [name]: { ...prevState[name], text: value, errorEmpty: false },
     }))
   }
-  profileShow = () => {
-    this.setState((prevState) => ({
-      ...prevState,
-      profileDone: this.state.hasError ? false : true,
-    }))
-  }
-  handleSubmit = (e) => {
+  const handleSubmit = (e) => {
     e.preventDefault()
-    Object.keys(this.state).forEach((fieldName) => {
+    Object.keys(state).forEach((fieldName) => {
       if (fieldName !== 'hasError' && fieldName !== 'profileDone') {
-        if (this.state[fieldName].text === '') {
-          this.setState(
-            (prevState) => ({
-              ...prevState,
-              [fieldName]: {
-                ...prevState[fieldName],
-                errorEmpty: true,
-              },
-              hasError: true,
-            }),
-            () => this.profileShow()
-          )
+        if (state[fieldName].text === '') {
+          setState((prevState) => ({
+            ...prevState,
+            [fieldName]: {
+              ...prevState[fieldName],
+              errorEmpty: true,
+            },
+            hasError: true,
+          }))
         }
       }
     })
-    this.profileShow()
+    setConfirm(true)
   }
-  handleCancel = (e) => {
+  const handleCancel = (e) => {
     e.preventDefault()
-    Object.keys(this.state).forEach((fieldName) => {
-      this.setState((prevState) => ({
+    Object.keys(state).forEach((fieldName) => {
+      setState((prevState) => ({
         ...prevState,
         [fieldName]: {
           text: '',
@@ -175,44 +168,42 @@ class App extends React.Component {
       }))
     })
   }
-  render() {
-    return (
-      <div className="App">
-        <h2 className="form-title">My profile</h2>
-        {this.state.profileDone ? (
-          <Profile profile={this.state} />
-        ) : (
-          <form className="profile-form" onSubmit={this.handleSubmit}>
-            <FirstName
-              name={this.state.firstName}
-              handler={this.handlerOnChange}
-            />
-            <LastName
-              name={this.state.lastName}
-              handler={this.handlerOnChange}
-            />
-            <Date date={this.state.birthDay} handler={this.handlerOnChange} />
-            <Phone phone={this.state.phone} handler={this.handlerOnChange} />
-            <Site site={this.state.webSite} handler={this.handlerOnChange} />
-            <About about={this.state.about} handler={this.handlerOnChange} />
-            <Stack stack={this.state.stack} handler={this.handlerOnChange} />
-            <Project
-              project={this.state.lastProject}
-              handler={this.handlerOnChange}
-            />
-            <div className="buttons">
-              <button className="confirm" type="submit">
-                Сохранить
-              </button>
-              <button className="cancel" onClick={this.handleCancel}>
-                Отменить
-              </button>
-            </div>
-          </form>
-        )}
-      </div>
-    )
-  }
+  useEffect(() => {
+    if (confirm === true && state.hasError === false) {
+      setState((prevState) => ({
+        ...prevState,
+        profileDone: true,
+      }))
+    }
+    // eslint-disable-next-line
+  }, [confirm])
+  return (
+    <div className="App">
+      <h2 className="form-title">My profile</h2>
+      {state.profileDone ? (
+        <Profile profile={state} />
+      ) : (
+        <form className="profile-form" onSubmit={handleSubmit}>
+          <FirstName name={state.firstName} handler={handlerOnChange} />
+          <LastName name={state.lastName} handler={handlerOnChange} />
+          <Date date={state.birthDay} handler={handlerOnChange} />
+          <Phone phone={state.phone} handler={handlerOnChange} />
+          <Site site={state.webSite} handler={handlerOnChange} />
+          <About about={state.about} handler={handlerOnChange} />
+          <Stack stack={state.stack} handler={handlerOnChange} />
+          <Project project={state.lastProject} handler={handlerOnChange} />
+          <div className="buttons">
+            <button className="confirm" type="submit">
+              Сохранить
+            </button>
+            <button className="cancel" onClick={handleCancel}>
+              Отменить
+            </button>
+          </div>
+        </form>
+      )}
+    </div>
+  )
 }
 
 export default App
